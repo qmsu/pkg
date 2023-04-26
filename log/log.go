@@ -1,10 +1,6 @@
 package log
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/natefinch/lumberjack"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -12,6 +8,11 @@ import (
 	"runtime/debug"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/natefinch/lumberjack"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 const (
@@ -31,10 +32,12 @@ func Sugar() *zap.SugaredLogger {
 }
 
 type Config struct {
-	OutputPath                  string
-	MaxSize, MaxBackups, MaxAge int
-	Compress                    bool
-	Level                       int8
+	Level      int8   `toml:"level"`
+	OutputPath string `toml:"output_path"` //日志文件路径
+	MaxSize    int    `toml:"max_size"`    // 每个文件大小 M
+	MaxBackups int    `toml:"max_backups"` // 最多保留30个备份
+	MaxAge     int    `toml:"max_age"`     // 日志文件保存时间 天
+	Compress   bool   `toml:"compress"`    // 是否压缩 disabled by default
 }
 
 func Init(conf Config) {
