@@ -119,3 +119,35 @@ func Put(reqUrl string, header map[string]string, statusCode int, reqData interf
 	}
 	return nil
 }
+
+func Patch(reqUrl string, header map[string]string, statusCode int, reqData interface{}, respData interface{}, errCallBackFunc func(resp *http.Response) error) error {
+	client := new(http.Client)
+	b, _ := json.Marshal(reqData)
+	request, err := http.NewRequest("PATCH", reqUrl, bytes.NewBuffer(b))
+	if err != nil {
+		return err
+	}
+	request.Header.Add("Content-Type", "application/json")
+	for k, v := range header {
+		request.Header.Add(k, v)
+	}
+	resp, err := client.Do(request)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != statusCode {
+		return errCallBackFunc(resp)
+	}
+	if respData != nil {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		defer resp.Body.Close()
+		err = json.Unmarshal(body, respData)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
