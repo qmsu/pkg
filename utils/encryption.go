@@ -5,6 +5,9 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	uuid "github.com/satori/go.uuid"
+	tsgutils "github.com/typa01/go-utils"
+	"time"
 )
 
 func MD5(rawString string) string {
@@ -37,4 +40,35 @@ func Bytes2Hex(bts []int8) string {
 		des = fmt.Sprintf("%s%s", des, tmp)
 	}
 	return des
+}
+
+func GetUuid() (tokenString string) {
+	return fmt.Sprintf("%s", uuid.Must(uuid.NewV4(), nil))
+}
+
+const baseDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+const baseDigitsLen int64 = int64(len(baseDigits))
+
+//构建36位的唯一主键码
+func BuildKeyID() string {
+	//62进制时间戳+UUID截取 定长36位，保证有序
+	currentMillis := time.Now().UnixNano() / 1000000 //毫秒
+	var sb []byte
+
+	for {
+		if currentMillis == 0 {
+			break
+		}
+		sb = append(sb, baseDigits[int(currentMillis%baseDigitsLen)])
+		currentMillis /= baseDigitsLen
+	}
+
+	sbLen := len(sb)
+	for i := 0; i < (sbLen / 2); i++ {
+		sb[i], sb[sbLen-i-1] = sb[sbLen-i-1], sb[i]
+	}
+
+	uuid := tsgutils.GUID()
+	timePrefix := string(sb)
+	return timePrefix + uuid[0:(36-len(timePrefix))]
 }
