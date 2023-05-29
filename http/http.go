@@ -13,7 +13,7 @@ import (
 //resData 返回数据
 //statusCode HTTP返回Code
 //errCallBackFunc 返回不为 statusCode 时处理函数
-func HttpGet(reqUrl string, header map[string]string, resData interface{}, errCallBackFunc func(resp *http.Response) error) error {
+func Get(reqUrl string, header map[string]string, resData interface{}, errCallBackFunc func(resp *http.Response) error) error {
 	client := http.Client{
 		Timeout: time.Second * 120,
 	}
@@ -51,7 +51,7 @@ func HttpGet(reqUrl string, header map[string]string, resData interface{}, errCa
 //resData 返回数据
 //statusCode HTTP返回Code
 //errCallBackFunc 返回不为 statusCode 时处理函数
-func HttpPost(reqUrl string, header map[string]string, statusCode int, reqData interface{}, respData interface{}, errCallBackFunc func(resp *http.Response) error) error {
+func Post(reqUrl string, header map[string]string, statusCode int, reqData interface{}, respData interface{}, errCallBackFunc func(resp *http.Response) error) error {
 	client := new(http.Client)
 	b, _ := json.Marshal(reqData)
 	request, err := http.NewRequest("POST", reqUrl, bytes.NewBuffer(b))
@@ -89,7 +89,7 @@ func HttpPost(reqUrl string, header map[string]string, statusCode int, reqData i
 //resData 返回数据
 //statusCode HTTP返回Code
 //errCallBackFunc 返回不为 statusCode 时处理函数
-func HttpPut(reqUrl string, header map[string]string, statusCode int, reqData interface{}, respData interface{}, errCallBackFunc func(resp *http.Response) error) error {
+func Put(reqUrl string, header map[string]string, statusCode int, reqData interface{}, respData interface{}, errCallBackFunc func(resp *http.Response) error) error {
 	client := new(http.Client)
 	b, _ := json.Marshal(reqData)
 	request, err := http.NewRequest("PUT", reqUrl, bytes.NewBuffer(b))
