@@ -158,7 +158,11 @@ func CopyFile(dstName, srcName string) (written int64, err error) {
 		return
 	}
 	defer src.Close()
-	dst, err := os.OpenFile(dstName, os.O_WRONLY|os.O_CREATE, 0644)
+	//获取源文件的权限
+	fi, _ := src.Stat()
+	perm := fi.Mode()
+
+	dst, err := os.OpenFile(dstName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, perm) //复制源文件的所有权限
 	if err != nil {
 		return
 	}
@@ -180,7 +184,8 @@ func IsFile(path string) bool {
 	return !IsDir(path)
 }
 
-//文件或目录重命名
+//重命名文件
+//如果重复则重命名为 文件名 - 副本 的形式
 func RenameFile(src string) (newName string, err error) {
 	info, err := os.Stat(src)
 	if err == nil {
@@ -218,13 +223,15 @@ func RenameFile(src string) (newName string, err error) {
 	return "", err
 }
 
+//重命名文件
+//如果重复则重命名为 文件名_序号 的形式
 func RenameFileName(targetPath, fileName, fileExt string) (newName string, err error) {
 	newPath := filepath.Join(targetPath, fileName+fileExt)
 	_, err = os.Stat(newPath)
 	if err == nil {
 		i := 1
 		for {
-			//判断文件是否存在，如果存在则重命名为科目名_序号
+			//判断文件是否存在，如果存在则重命名为文件名_序号
 			newName = fmt.Sprintf("%s_%02d%s", fileName, i, fileExt)
 			_, err = os.Stat(filepath.Join(targetPath, newName))
 			if err == nil {

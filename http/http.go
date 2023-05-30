@@ -3,6 +3,7 @@ package http
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -29,6 +30,9 @@ func Get(reqUrl string, header map[string]string, resData interface{}, errCallBa
 		return err
 	}
 	if resp.StatusCode != http.StatusOK {
+		if errCallBackFunc != nil {
+			return errors.New("请求异常")
+		}
 		return errCallBackFunc(resp)
 	}
 	if resData != nil {
@@ -104,6 +108,9 @@ func Put(reqUrl string, header map[string]string, statusCode int, reqData interf
 		return err
 	}
 	if resp.StatusCode != statusCode {
+		if errCallBackFunc != nil {
+			return errors.New("请求异常")
+		}
 		return errCallBackFunc(resp)
 	}
 	if respData != nil {
@@ -136,6 +143,9 @@ func Patch(reqUrl string, header map[string]string, statusCode int, reqData inte
 		return err
 	}
 	if resp.StatusCode != statusCode {
+		if errCallBackFunc != nil {
+			return errors.New("请求异常")
+		}
 		return errCallBackFunc(resp)
 	}
 	if respData != nil {
