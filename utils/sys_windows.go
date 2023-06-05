@@ -27,7 +27,7 @@ func CheckPort(port string) bool {
 	resStr := outBytes.String()
 	r := regexp.MustCompile(`\s\d+\s`).FindAllString(resStr, -1)
 	if len(r) > 0 {
-		pid, err := strconv.Atoi(strings.TrimSpace(r[0]))
+		_, err := strconv.Atoi(strings.TrimSpace(r[0]))
 		if err != nil {
 			fmt.Println("err", err.Error())
 			return true

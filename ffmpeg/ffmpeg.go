@@ -17,3 +17,14 @@ type VideoDetail struct {
 	DetectionResult string  `json:"detection_result,omitempty"` //detectionResult
 	TsDuration      float32 `json:"ts_duration,omitempty"`      //单片ts录制时长
 }
+
+type Ffprobe struct {
+	Format FfprobeFormat `json:"format"`
+}
+
+type FfprobeFormat struct {
+	FileName  string `json:"filename"`
+	StartTime string `json:"start_time"`
+	Duration  string `json:"duration"`
+	Size      string `json:"size"`
+}

@@ -22,7 +22,7 @@ func GetVideoDetail(videoPath string) (videoDetail VideoDetail, err error) {
 	dir := filepath.Dir(videoPath)
 	cmd := exec.Command("cmd", "/c", "cd", "/d", dir, "&&", "ffprobe", "-i", videoPath, "-print_format", "json", "-show_format", ">", tmpFileDir)
 	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
-	output, err := cmd.CombinedOutput()
+	_, err = cmd.CombinedOutput()
 	if err != nil {
 		return videoDetail, err
 	}
@@ -30,7 +30,7 @@ func GetVideoDetail(videoPath string) (videoDetail VideoDetail, err error) {
 	if err != nil {
 		return videoDetail, err
 	}
-	var ffprobeData models.Ffprobe
+	var ffprobeData Ffprobe
 	err = json.Unmarshal(b, &ffprobeData)
 	if err != nil {
 		return videoDetail, err
