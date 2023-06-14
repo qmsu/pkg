@@ -2,7 +2,9 @@ package utils
 
 import (
 	"encoding/json"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 func IsContain(items []string, item string) bool {
@@ -107,4 +109,22 @@ func IsInt8Contain(items []uint8, item uint8) bool {
 		}
 	}
 	return false
+}
+
+// RandStringRunes 返回随机字符串
+func RandStringRunes(n int, isAllLower bool) string {
+	// 去掉0 I l o 的字符串
+	var letterRunes = []rune("123456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ")
+	//避免windows时间每次拿到一致的盐值，休息10ms
+	time.Sleep(10 * time.Millisecond)
+	rand.Seed(time.Now().UnixNano())
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	randStr := string(b)
+	if isAllLower {
+		randStr = strings.ToLower(randStr)
+	}
+	return randStr
 }
