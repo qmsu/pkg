@@ -80,6 +80,12 @@ func GetNetReception() (download, upload int64, err error) {
 	}
 	download = int64(info2[0].BytesRecv - info[0].BytesRecv) //下载
 	upload = int64(info2[0].BytesSent - info[0].BytesSent)   //上传
+	if download < 0 {
+		download = 0
+	}
+	if upload < 0 {
+		upload = 0
+	}
 	return download, upload, nil
 }
 
