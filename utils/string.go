@@ -2,6 +2,8 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -127,4 +129,19 @@ func RandStringRunes(n int, isAllLower bool) string {
 		randStr = strings.ToLower(randStr)
 	}
 	return randStr
+}
+
+// 特殊字符检测
+func ValidString(str string) error {
+	disabledStrArr := []string{
+		`\`, `/`, `:`, `*`, `?`, `"`, `<`, `>`, `|`, `'`,
+	}
+	disabledStr := `\/:*?"<>|'`
+	errMsg := fmt.Sprintf("不得包含 %s 等字符 ", disabledStr)
+	for _, v := range disabledStrArr {
+		if strings.Contains(str, v) {
+			return errors.New(errMsg)
+		}
+	}
+	return nil
 }
