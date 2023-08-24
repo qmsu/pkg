@@ -13,6 +13,7 @@ require (
 	github.com/shirou/gopsutil/v3 v3.23.4
 	github.com/typa01/go-utils v0.0.0-20181126045345-a86b05b01c1e
 	go.uber.org/zap v1.24.0
+	gorm.io/gorm v1.25.4
 )
 
 require (
@@ -28,6 +29,8 @@ require (
 	github.com/go-playground/validator/v10 v10.11.1 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/golang/snappy v0.0.2 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/klauspost/compress v1.11.4 // indirect
 	github.com/klauspost/pgzip v1.2.5 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
