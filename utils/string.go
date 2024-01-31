@@ -145,3 +145,16 @@ func ValidString(str string) error {
 	}
 	return nil
 }
+
+// 忽略系统文件
+func SysIgnore(oldPath, fileName string, ignoreHide bool) bool {
+	if strings.Contains(oldPath, "$RECYCLE") ||
+		strings.Contains(oldPath, "__MACOSX") ||
+		fileName == "desktop.ini" ||
+		strings.Contains(oldPath, "$RECYCLE.BIN") ||
+		strings.Contains(oldPath, "@Recycle") {
+		fmt.Println("$RECYCLE")
+		return true
+	}
+	return false
+}
